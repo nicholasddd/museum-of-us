@@ -5,11 +5,13 @@ cd "$(dirname "$0")/.."
 npm run build
 touch dist/.nojekyll
 remote=$(git remote get-url origin)
+name=$(git config user.name)
+email=$(git config user.email)
 cd dist
 rm -rf .git
 git init -q -b gh-pages
 git add -A
-git commit -q -m "Deploy $(date -u +%Y-%m-%dT%H:%MZ)"
+git -c user.name="$name" -c user.email="$email" commit -q -m "Deploy $(date -u +%Y-%m-%dT%H:%MZ)"
 git push -q -f "$remote" gh-pages
 rm -rf .git
 echo "Published to GitHub Pages."
